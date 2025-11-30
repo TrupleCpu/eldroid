@@ -2,19 +2,14 @@
 
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { MdOutlineEmail } from "react-icons/md";
-import { FaLock } from "react-icons/fa6";
-import Signin from "./components/Signin";
-import Signup from "./components/Signup";
+import { ToastContainer } from "react-toastify"
+import AddUser from "./components/AddUser";
+import AllUser from "./components/AllUser";
 
 export default function Home() {
-  const [tab, setTab] = useState<"signin" | "signup">("signup");
+  const [tab, setTab] = useState<"Add User" | "All User">("Add User");
 
-  useEffect(() => {
-    fetch("/api/register")
-      .then((res) => res.json())
-      .then((data) => console.log(data.users));
-  }, []);
+ 
 
   return (
     <div className="w-full h-screen flex items-center justify-center">
@@ -27,23 +22,23 @@ export default function Home() {
             className="absolute top-1 bottom-1 rounded-md bg-gray-200"
             style={{ width: "50%" }}
             animate={{
-              left: tab === "signin" ? "1%" : "49%",
+              left: tab === "Add User" ? "1%" : "49%",
             }}
             transition={{ type: "spring", stiffness: 300, damping: 25 }}
           />
 
           <button
-            onClick={() => setTab("signin")}
+            onClick={() => setTab("Add User")}
             className="z-10 flex-1 py-2 text-sm sm:text-base md:text-base lg:text-base"
           >
-            Sign in
+           Add User
           </button>
 
           <button
-            onClick={() => setTab("signup")}
+            onClick={() => setTab("All User")}
             className="z-10 flex-1 py-2 text-sm sm:text-base md:text-base lg:text-base"
           >
-            Sign up
+            All User
           </button>
         </div>
 
@@ -52,9 +47,10 @@ export default function Home() {
           layout
           transition={{ type: "spring", stiffness: 300, damping: 25 }}
         >
-          {tab === "signin" ? <Signin /> : <Signup />}
+          {tab === "Add User" ? <AddUser /> : <AllUser />}
         </motion.div>
       </motion.div>
+      <ToastContainer />
     </div>
   );
 }
