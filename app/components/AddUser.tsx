@@ -24,13 +24,13 @@ const Signin = () => {
     formData.append("level", level);
 
     try {
-    //   const res = await fetch("/api/user", {
-    //     method: "POST",
-    //     body: formData,
-    //   });
+      const res = await fetch("/api/user", {
+        method: "POST",
+        body: formData,
+      });
 
-    //   const data = await res.json();
-    //   console.log(data);
+      const data = await res.json();
+      console.log(data);
     
       toast.success('User Added!', {
     position: "bottom-center",

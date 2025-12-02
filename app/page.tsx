@@ -12,9 +12,9 @@ export default function Home() {
  
 
   return (
-    <div className="w-full h-screen flex items-center justify-center">
+    <div className="w-full h-screen flex items-center justify-center p-10">
       <motion.div
-        className="border-2 border-gray-200 p-5 h-full lg:h-auto  space-y-10 w-full  lg:w-[30%] rounded-md overflow-hidden "
+        className="  h-full space-y-10 w-full   rounded-md overflow-hidden "
         transition={{ type: "spring", stiffness: 300, damping: 25 }}
       >
         <div className="w-full relative flex border border-gray-200 p-2 rounded-md">

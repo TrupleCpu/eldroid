@@ -2,6 +2,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { runQuery } from "@/app/lib/db";
 import getString from "@/app/lib/formHelper";
+import { a, em } from "framer-motion/client";
 
 type UserForm = {
     idNo: string;
@@ -53,4 +54,22 @@ export async function GET(){
   } catch(err) {
      return NextResponse.json( { error: (err as Error).message}, {status: 500} )
   }
+}
+
+
+export async function PUT(req: NextRequest, { params }: { params: { idNo: string }}){
+    const idNo = params.idNo;
+    
+    try {
+        const body = await req.json();
+
+        const { firstName, lastName, course, level, email, age} = body;
+
+        await runQuery("UPDATE users SET firstname = ?, lastname = ?, course = ?, level = ?, email = ?, age = ? WHERE idNo = ?", [firstName, lastName, course, level, email, age])
+
+        return NextResponse.json({ message: "Updated successfully "});
+    } catch(error) {
+        
+        return NextResponse.json({ error: "Update failed"}, { status: 500 })
+    }
 }
