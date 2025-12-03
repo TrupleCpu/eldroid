@@ -11,10 +11,24 @@ const Signin = () => {
   const [firstName, setFirstName] = useState<string>("");
   const [course, setCourse] = useState<string>("");
   const [level, setLevel] = useState<string>("");
-  const [message, setMessage] = useState<string>("");
 
   const addUser = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if(idNo === "" || lastName === "" || firstName === "" || course === "" || level  === ""){
+      toast.warning("Field must not be empty!", {
+      position: "bottom-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      });
+      return;
+    }
 
     const formData = new FormData();
     formData.append("idNo", idNo);
@@ -32,18 +46,38 @@ const Signin = () => {
       const data = await res.json();
       console.log(data);
     
-      toast.success('User Added!', {
-    position: "bottom-center",
-    autoClose: 5000,
-    hideProgressBar: false,
-    closeOnClick: false,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-    theme: "light",
-    transition: Bounce,
-    });
-  
+      if(data.success){
+      setIdNo("");
+      setFirstName("");
+      setLastName("");
+      setCourse("");
+      setLevel("");
+
+      toast.success(data.message, {
+      position: "bottom-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      });
+    return;  
+    }
+      toast.error(data.message, {
+      position: "bottom-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      });
+    
     } catch (error) {
       console.log(error);
     }

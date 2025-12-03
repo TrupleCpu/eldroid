@@ -57,19 +57,45 @@ export async function GET(){
 }
 
 
-export async function PUT(req: NextRequest, { params }: { params: { idNo: string }}){
-    const idNo = params.idNo;
+export async function PUT(req: NextRequest){
+   const url = new URL(req.url);
+    const id = url.searchParams.get("id");
+
+    if (!id) {
+        return NextResponse.json({ message: "ID is required" }, { status: 400 });
+    }
     
     try {
         const body = await req.json();
 
-        const { firstName, lastName, course, level, email, age} = body;
+        const { idNo, firstName, lastName, course, level,  } = body;
 
-        await runQuery("UPDATE users SET firstname = ?, lastname = ?, course = ?, level = ?, email = ?, age = ? WHERE idNo = ?", [firstName, lastName, course, level, email, age])
+        await runQuery("UPDATE users SET idNo = ?, firstname = ?, lastname = ?, course = ?, level = ?", [ idNo, firstName, lastName, course, level, id])
 
-        return NextResponse.json({ message: "Updated successfully "});
+      
+        return NextResponse.json({ success: true, message: "Updated successfully" });
+        
     } catch(error) {
         
         return NextResponse.json({ error: "Update failed"}, { status: 500 })
     }
 }
+
+export async function DELETE(req: NextRequest){
+    const url = new URL(req.url);
+    const id = url.searchParams.get("id");
+
+    if (!id) {
+        return NextResponse.json({ message: "ID is required" }, { status: 400 });
+    }
+
+    try {
+            await runQuery("DELETE FROM users WHERE id = ?", [id]);
+
+         return NextResponse.json({ success: true, message: "User deleted successfully" }, { status: 200 });
+
+    } catch(err) {
+        return NextResponse.json({ error: "Delete failed" }, { status: 500 });
+    }
+}
+
