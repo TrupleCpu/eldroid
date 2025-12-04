@@ -2,7 +2,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { runQuery } from "@/app/lib/db";
 import getString from "@/app/lib/formHelper";
-import { a, em } from "framer-motion/client";
 
 type UserForm = {
     idNo: string;
@@ -70,7 +69,7 @@ export async function PUT(req: NextRequest){
 
         const { idNo, firstName, lastName, course, level,  } = body;
 
-        await runQuery("UPDATE users SET idNo = ?, firstname = ?, lastname = ?, course = ?, level = ?", [ idNo, firstName, lastName, course, level, id])
+        await runQuery("UPDATE users SET idNo = ?, firstname = ?, lastname = ?, course = ?, level = ? WHERE id = ? ", [ idNo, firstName, lastName, course, level, id])
 
       
         return NextResponse.json({ success: true, message: "Updated successfully" });
